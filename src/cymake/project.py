@@ -1,3 +1,4 @@
+from pathlib import Path
 from typing import List
 from cymake.cache import Cache
 from cymake.targets import Executable
@@ -6,9 +7,9 @@ from cymake.version import Version
 
 
 class Project:
-    def __init__(self, name: str, cmake_version: Version):
+    def __init__(self, name: str, cmake_minimum: Version):
         self._name = name
-        self._cmake_version = cmake_version
+        self._cmake_version = cmake_minimum
         self._cache = Cache()
         self._executables: List[Executable] = []
 
@@ -37,3 +38,12 @@ class Project:
             executables_code,
             ""
         ])
+
+    def write_cmake_file(self, path: Path | str):
+        content = self.code()
+
+        path = Path(path)
+        path.parent.mkdir(exist_ok=True)
+
+        with open(path, "w") as f:
+            f.write(content)

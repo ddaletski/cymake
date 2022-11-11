@@ -5,7 +5,7 @@ from typing import Optional
 class Version:
     major: int
     minor: int
-    build: Optional[int]
+    build: Optional[int] = None
 
     def __str__(self) -> str:
         ver_str = f"{self.major}.{self.minor}"

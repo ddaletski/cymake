@@ -20,7 +20,7 @@ class Context:
         assert self.project_name is not None, "project name must be specified"
         assert self.version is not None, "cmake minimum version must be specified"
 
-        project = Project(name=self.project_name, cmake_version=self.version)
+        project = Project(name=self.project_name, cmake_minimum=self.version)
         project.cache.update(self.cache)
         for exe in self.executables:
             project.add_executable(exe)
