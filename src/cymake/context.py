@@ -23,7 +23,7 @@ class Context:
         project = Project(name=self.project_name, cmake_minimum=self.version)
         project.cache.update(self.cache)
         for exe in self.executables:
-            project.add_executable(exe)
+            project.add_targets(exe)
 
         return project
 

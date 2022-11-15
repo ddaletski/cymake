@@ -1,17 +1,18 @@
 from pathlib import Path
 from typing import List
-from cymake.cache import Cache
-from cymake.targets import Executable
 
-from cymake.version import Version
+from .cache import Cache
+from .common import DefaultFormatter, CodeGenerator
+from .targets import Executable, Target
+from .version import Version
 
 
-class Project:
+class Project(CodeGenerator):
     def __init__(self, name: str, cmake_minimum: Version):
         self._name = name
         self._cmake_version = cmake_minimum
         self._cache = Cache()
-        self._executables: List[Executable] = []
+        self._targets: List[Target] = []
 
     @property
     def name(self) -> str:
@@ -25,19 +26,21 @@ class Project:
     def cache(self) -> Cache:
         return self._cache
 
-    def add_executable(self, exe: Executable):
-        self._executables.append(exe)
+    def add_targets(self, target: Target, *_targets: List[Target]):
+        self._targets.append(target)
+        self._targets.extend(_targets)
 
     def code(self) -> str:
-        executables_code = "\n\n".join([exe.code() for exe in self._executables])
+        targets_code = DefaultFormatter.lines(
+            *(exe.code() for exe in self._targets)
+        )
 
-        return "\n".join([
+        return DefaultFormatter.lines(
             f"cmake_minimum_required(VERSION {self.cmake_version})",
             f"project({self.name})",
-            "",
-            executables_code,
-            ""
-        ])
+            DefaultFormatter.newlines(2),
+            targets_code,
+        )
 
     def write_cmake_file(self, path: Path | str):
         content = self.code()

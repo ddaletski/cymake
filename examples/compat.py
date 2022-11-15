@@ -7,7 +7,6 @@ project("simple_example")
 cache.set(Constants.CMAKE_CXX_STANDARD, 14)
 
 sources = ["main.cpp"]
-main = add_executable("main")
-main.set_sources(sources)
+add_executable("main", sources=sources)
 
 write_cmake_file("CMakeLists.txt")

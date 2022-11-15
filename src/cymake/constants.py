@@ -1,5 +1,5 @@
 class Constants:
-    @classmethod
+    @staticmethod
     @property
-    def CMAKE_CXX_STANDARD(cls) -> str:
-        return "lol"
+    def CMAKE_CXX_STANDARD() -> str:
+        return "CMAKE_CXX_STANDARD"

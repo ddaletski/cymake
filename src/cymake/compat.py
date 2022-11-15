@@ -1,11 +1,9 @@
 from pathlib import Path
-from typing import Optional
-
-from cymake.targets import Executable
-from cymake.version import Version
+from typing import List, Optional
 
 from .context import global_context as ctx
-
+from .targets import Executable
+from .version import Version
 
 cache = ctx.cache
 
@@ -14,8 +12,9 @@ def project(name: str):
     ctx.project_name = name
 
 
-def add_executable(name: str) -> Executable:
+def add_executable(name: str, sources: List[str]) -> Executable:
     exe = Executable(name)
+    exe.set_sources(sources)
     ctx.executables.append(exe)
     return exe
 

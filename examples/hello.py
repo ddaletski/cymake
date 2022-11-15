@@ -1,13 +1,15 @@
-from cymake import Project, Constants, Executable, Version
+from cymake import Project, Constants, Executable, Library, Version
 
 project = Project(name="simple_example", cmake_minimum=Version(3, 8))
 
 project.cache.set(Constants.CMAKE_CXX_STANDARD, 14)
 
-sources = ["main.cpp"]
-main = Executable("main")
-main.set_sources(sources)
+lib = Library.shared("mylib")
+lib.sources = ["lib.hpp"]
 
-project.add_executable(main)
+main = Executable("main")
+main.sources = ["main.cpp"]
+
+project.add_targets(lib, main)
 
 project.write_cmake_file("CMakeLists.txt")
